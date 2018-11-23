@@ -654,6 +654,9 @@
 
       An account object implements this interface if it provides
       documents-like capabilities.
+
+      The #org.gnome.OnlineAccounts.Documents interface is not used
+      by any account.
   -->
   <interface name="org.gnome.OnlineAccounts.Documents">
   </interface>
