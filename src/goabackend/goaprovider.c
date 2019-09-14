@@ -433,7 +433,7 @@ goa_provider_get_provider_features (GoaProvider *self)
  * This is a pure virtual method - a subclass must provide an
  * implementation.
  *
- * Returns: The #GoaObject for the created account (must be relased
+ * Returns: (transfer full): The #GoaObject for the created account (must be relased
  *   with g_object_unref()) or %NULL if @error is set.
  */
 GoaObject *
@@ -508,8 +508,8 @@ goa_provider_refresh_account (GoaProvider  *self,
  * @client: A #GoaClient.
  * @object: A #GoaObject with a #GoaAccount interface.
  * @vbox: A vertically oriented #GtkBox to put content in.
- * @grid: A #GtkGrid to put content in.
- * @dummy: Unused.
+ * @dummy1: Unused.
+ * @dummy2: Unused.
  *
  * Method used to add widgets in the control panel for the account
  * represented by @object.
@@ -1126,7 +1126,7 @@ goa_provider_get_all (GAsyncReadyCallback callback,
  * goa_provider_get_all_finish:
  * @out_providers: (out) (transfer full) (element-type GoaProvider):
  * Return location for a list of #GoaProvider instances.
- * @res: A #GAsyncResult obtained from the #GAsyncReadyCallback passed to goa_provider_get_all().
+ * @result: A #GAsyncResult obtained from the #GAsyncReadyCallback passed to goa_provider_get_all().
  * @error: Return location for error or %NULL.
  *
  * Finishes an operation started with goa_provider_get_all().
@@ -1265,6 +1265,9 @@ goa_provider_get_preseed_data (GoaProvider *self)
 
 /* ---------------------------------------------------------------------------------------------------- */
 
+/**
+ * goa_util_add_row_widget: (skip)
+ */
 GtkWidget *
 goa_util_add_row_widget (GtkGrid      *grid,
                          gint          row,
@@ -1294,6 +1297,9 @@ goa_util_add_row_widget (GtkGrid      *grid,
 
 /* ---------------------------------------------------------------------------------------------------- */
 
+/**
+ * goa_util_lookup_keyfile_string: (skip)
+ */
 gchar *
 goa_util_lookup_keyfile_string (GoaObject    *object,
                                 const gchar  *key)
@@ -1347,6 +1353,9 @@ goa_util_lookup_keyfile_string (GoaObject    *object,
   return ret;
 }
 
+/**
+ * goa_util_lookup_keyfile_boolean: (skip)
+ */
 gboolean
 goa_util_lookup_keyfile_boolean (GoaObject    *object,
                                  const gchar  *key)
@@ -1402,6 +1411,9 @@ goa_util_lookup_keyfile_boolean (GoaObject    *object,
 
 /* ---------------------------------------------------------------------------------------------------- */
 
+/**
+ * goa_util_account_notify_property_cb: (skip)
+ */
 void
 goa_util_account_notify_property_cb (GObject *object, GParamSpec *pspec, gpointer user_data)
 {
@@ -1422,6 +1434,9 @@ goa_util_account_notify_property_cb (GObject *object, GParamSpec *pspec, gpointe
 
 /* ---------------------------------------------------------------------------------------------------- */
 
+/**
+ * goa_util_add_row_switch_from_keyfile_with_blurb: (skip)
+ */
 GtkWidget *
 goa_util_add_row_switch_from_keyfile_with_blurb (GtkGrid      *grid,
                                                  gint          row,
