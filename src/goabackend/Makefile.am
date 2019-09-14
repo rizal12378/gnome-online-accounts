@@ -1,7 +1,10 @@
+-include $(INTROSPECTION_MAKEFILE)
 
 NULL =
 CLEANFILES =
 EXTRA_DIST =
+INTROSPECTION_GIRS =
+INTROSPECTION_COMPILER_ARGS = --includedir=$(top_builddir)/src/goa
 
 AM_CPPFLAGS = 							\
 	-I$(top_builddir)/src -I$(top_srcdir)/src		\
@@ -213,6 +216,65 @@ goadleynaservermediadevice.h goadleynaservermediadevice.c: goadleynaservermediad
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = goa-backend-1.0.pc
+
+# ----------------------------------------------------------------------------------------------------
+
+if HAVE_INTROSPECTION
+introspection_sources =					\
+	$(libgoa_backend_1_0_la_HEADERS)			\
+	goabackendenumtypes.c					\
+	goaprovider.c						\
+	$(NULL)
+
+GoaBackend-1.0.gir: libgoa-backend-1.0.la
+GoaBackend_1_0_gir_INCLUDES = Gio-2.0 Gtk-3.0
+GoaBackend_1_0_gir_EXPORT_PACKAGES = goa-backend-1.0
+GoaBackend_1_0_gir_LIBS = goa-backend-1.0
+GoaBackend_1_0_gir_FILES = $(introspection_sources)
+GoaBackend_1_0_gir_CFLAGS = $(AM_CPPFLAGS) $(libgoa_backend_1_0_la_CFLAGS)
+GoaBackend_1_0_gir_SCANNERFLAGS =					\
+	$(WARN_SCANNERFLAGS)						\
+	--c-include='goabackend/goabackend.h'				\
+	--identifier-prefix=Goa					\
+	--include-uninstalled=$(top_builddir)/src/goa/Goa-1.0.gir	\
+	$(NULL)
+INTROSPECTION_GIRS += GoaBackend-1.0.gir
+
+girdir = $(datadir)/gir-1.0
+gir_DATA = GoaBackend-1.0.gir
+
+typelibsdir = $(libdir)/girepository-1.0
+typelibs_DATA = GoaBackend-1.0.typelib
+
+CLEANFILES += $(gir_DATA) $(typelibs_DATA)
+
+if ENABLE_VAPIGEN
+-include $(VAPIGEN_MAKEFILE)
+
+goabackend-1.0.vapi: GoaBackend-1.0.gir GoaBackend-1.0.metadata goabackend-1.0.deps
+
+VAPIGEN_VAPIS = goabackend-1.0.vapi
+
+goabackend_1_0_vapi_DEPS = gio-2.0 gtk+-3.0
+goabackend_1_0_vapi_GIRDIRS = $(top_builddir)/src/goa
+goabackend_1_0_vapi_METADATADIRS = $(srcdir)
+goabackend_1_0_vapi_FILES = GoaBackend-1.0.gir
+
+goabackend-1.0.deps:
+	$(AM_V_GEN) for pkg in $(goabackend_1_0_vapi_DEPS); do \
+		echo $$pkg >> $@; \
+	done
+
+vapidir = $(datadir)/vala/vapi
+vapi_DATA = $(VAPIGEN_VAPIS) $(VAPIGEN_VAPIS:.vapi=.deps)
+
+CLEANFILES += $(vapi_DATA)
+
+EXTRA_DIST += GoaBackend-1.0.metadata
+
+endif # ENABLE_VAPIGEN
+
+endif # HAVE_INTROSPECTION
 
 # ----------------------------------------------------------------------------------------------------
 

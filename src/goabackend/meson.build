@@ -147,6 +147,31 @@ pkg.generate(
   variables: 'exec_prefix=${prefix}'
 )
 
+if enable_introspection
+  libgoa_backend_gir = gnome.generate_gir(
+    libgoa_backend,
+    sources: enum_sources + files('goaprovider.c') + headers,
+    dependencies: [libgoa_dep, libgoa_gir_dep],
+    includes: ['Gio-2.0', 'Gtk-3.0', libgoa_gir[0]],
+    nsversion: goa_api_version,
+    namespace: 'GoaBackend',
+    identifier_prefix: goa_ns,
+    export_packages: goa_backend_api_name,
+    extra_args: ['-DGOA_BACKEND_COMPILATION', '-DGOA_API_IS_SUBJECT_TO_CHANGE'],
+    header: join_paths('goabackend', 'goabackend.h'),
+    install: true
+  )
+
+  if enable_vapi
+    gnome.generate_vapi(
+      goa_backend_api_name,
+      sources: libgoa_backend_gir[0],
+      packages: ['gio-2.0', 'gtk+-3.0', libgoa_vapi],
+      install: true
+    )
+  endif
+endif
+
 libgoawebextension_sources = files(
   'goawebextension.c',
   'goawebextensionmain.c'

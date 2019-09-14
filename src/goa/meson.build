@@ -131,8 +131,12 @@ if enable_introspection
     install: true
   )
 
+  libgoa_gir_dep = declare_dependency(
+    sources: libgoa_gir
+  )
+
   if enable_vapi
-    gnome.generate_vapi(
+    libgoa_vapi = gnome.generate_vapi(
       goa_api_name,
       sources: libgoa_gir[0],
       packages: 'gio-2.0',
