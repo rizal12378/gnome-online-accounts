@@ -405,8 +405,8 @@ goa_client_get_object_manager (GoaClient        *self)
  *
  * Gets the #GoaManager for @self.
  *
- * Returns: (transfer none): A #GoaManager. Do not free, the returned
- * object belongs to @self.
+ * Returns: (transfer none) (allow-none): A #GoaManager or %NULL. Do
+ * not free, the returned object belongs to @self.
  */
 GoaManager *
 goa_client_get_manager (GoaClient *self)
